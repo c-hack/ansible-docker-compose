@@ -1,0 +1,4 @@
+---
+docker_compose_docker_users: []
+docker_compose_managed_projects: []
+docker_compose_target_dir: "/opt/docker-compose"

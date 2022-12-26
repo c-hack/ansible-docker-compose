@@ -1,8 +1,8 @@
 ---
 galaxy_info:
-  author: Insert author(s) here
-  description: Insert description here
-  company: stuvus (https://stuvus.uni-stuttgart.de)
+  author: Tim Neumann
+  description: Ansible role to install docker and docker-compose and copy docker-compose projects.
+  company: c-hack (https://c-hack.de)
 
   license: MIT
 
@@ -12,8 +12,10 @@ galaxy_info:
     - name: Debian
       versions:
         - buster
+        - bullseye
 
   galaxy_tags:
-    - Insert ansible galaxy tags here
+    - docker
+    - docker-compose
 
 dependencies: []
