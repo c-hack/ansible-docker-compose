@@ -1,2 +1,31 @@
 ---
+- include_tasks: install.yml
+  tags:
+    - install
 
+- name: Add users to docker group
+  user:
+    name: "{{ item }}"
+    groups: docker
+    append: yes
+  loop: "{{ docker_compose_docker_users }}"
+
+- name: Make docker-compose target directory
+  ansible.builtin.file:
+    path: "{{ docker_compose_target_dir }}"
+    state: directory
+
+- name: Copy docker-compose projects folders
+  copy:
+    src: "{{ docker_compose_project_folders_dir }}/"
+    dest: "{{ docker_compose_target_dir }}"
+    group: docker
+    directory_mode: '0775'
+    mode: '0664'
+
+- include_tasks: manageCompose.yml
+  loop: "{{ docker_compose_managed_projects }}"
+  loop_control:
+    loop_var: docker_compose_project
+  tags:
+    - docker-compose-manage

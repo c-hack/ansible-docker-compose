@@ -1,0 +1,19 @@
+---
+
+- name: "Pull images for docker-compose project {{ docker_compose_project }}"
+  ansible.builtin.shell:
+    chdir: "{{ docker_compose_target_dir }}/{{ docker_compose_project }}"
+    cmd: |
+      before=$(docker compose images) && \
+      docker compose pull && \
+      after=$(docker compose images) && \
+      if [ "$before" = "$after" ] ; then echo "no changes" ;fi
+  register: output
+  changed_when: "'no changes' not in output.stdout"
+
+- name: "Ensure docker-compose project {{ docker_compose_project }} is running (with current spec and images)"
+  ansible.builtin.shell:
+    chdir: "{{ docker_compose_target_dir }}/{{ docker_compose_project }}"
+    cmd: docker compose up -d
+  register: output
+  changed_when: "'Start' in output.stderr"

@@ -1,34 +1,51 @@
 # Role Name
 
-A brief description of the role goes here.
+Ansible role to install docker and docker-compose and copy docker-compose projects.
 
+It can also manage (bring up and pull images) projects.
 
 ## Requirements
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here.
-For instance, if the role uses the EC2 module or depends on other Ansible roles, it may be a good idea to mention in this section that the boto package is required.
-
+- debian
 
 ## Role Variables
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role.
-Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
-
-Don't forget to indent the markdown table so it is readable even if not rendered.
+The role supports the following variables
 
 | Name       | Required/Default         | Description                                                                                        |
 |------------|:------------------------:|----------------------------------------------------------------------------------------------------|
-| `example1` | :heavy_check_mark:       | Lorem ipsum dolor sit amet, consetetur sadipscing elitr,                                           |
-| `example2` | :heavy_multiplication_x: | Sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. |
-| `example3` | `True`                   | Stet clita kasd gubergren                                                                          |
-| `example4` | `5`                      | No sea takimata sanctus est Lorem ipsum dolor sit amet.                                            |
+| `docker_compose_docker_users` | `[]`       | A list of users that should be added to the docker group
+| `docker_compose_target_dir` | `/opt/docker-compose` | The directory where the docker compose projects should be copied to. |
+| `docker_compose_project_folders_dir` | :heavy_check_mark:                   | The directory of docker-compose projects (folders) to copy.                                                                       |
+| `docker_compose_managed_projects` | `[]`                      | The names of docker-compose projects which should be managed.                                            |
 
 
 ## Example
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+The following example playbook assumes that you cloned this role to roles/docker-compose (i.e. the name of the role is docker-compose instead of docker-compose) and that you have the following structure in your `files` folder:
+
+```text
+files/
+└── docker-composes
+    └── docker01
+        ├── aThirdProject
+        │   └── docker-compose.yml
+        ├── someOtherProject
+        │   └── docker-compose.yml
+        └── someProject
+            └── docker-compose.yml
+```
 
 ```yml
+- hosts: kube01
+  roles:
+    - role: docker-compose
+      docker_compose_docker_users:
+        - admin
+        - myOtherUser
+      docker_compose_project_folders_dir: "docker-composes/docker01"
+      docker_compose_managed_projects:
+        - someProject
 ```
 
 
@@ -39,4 +56,4 @@ This work is licensed under the [MIT License](./LICENSE).
 
 ## Author Information
 
-- [Author Name (nickname)](github profile) _givenname.familyname at stuvus.uni-stuttgart.de_
+- [Tim Neumann (neumatm)](https://github.com/neumantm) _tim at c-hack.de_
