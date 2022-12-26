@@ -1,8 +1,11 @@
-# Role Name
+# Ansible Docker Compose
 
 Ansible role to install docker and docker-compose and copy docker-compose projects.
 
 It can also manage (bring up and pull images) projects.
+
+The role does not install `docker-compose` standalone, but only the docker-compose plugin for the docker cli.
+So use `docker compose ...` instead of `docker-compose ...`
 
 ## Requirements
 
@@ -18,7 +21,6 @@ The role supports the following variables
 | `docker_compose_target_dir` | `/opt/docker-compose` | The directory where the docker compose projects should be copied to. |
 | `docker_compose_project_folders_dir` | :heavy_check_mark:                   | The directory of docker-compose projects (folders) to copy.                                                                       |
 | `docker_compose_managed_projects` | `[]`                      | The names of docker-compose projects which should be managed.                                            |
-
 
 ## Example
 
